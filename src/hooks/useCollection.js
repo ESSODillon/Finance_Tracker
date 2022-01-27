@@ -9,23 +9,23 @@ export const useCollection = (collection) => {
     let ref = projectFirestore.collection(collection);
 
     const unsubscribe = ref.onSnapshot(
-      () => {
+      (snapshot) => {
         let results = [];
         snapshot.docs.forEach((doc) => {
           results.push({ ...doc.data(), id: doc.id });
         });
 
-        // Update state
+        // update state
         setDocuments(results);
         setError(null);
       },
       (error) => {
         console.log(error);
-        setError("Could not fetch the data");
+        setError("could not fetch the data");
       }
     );
 
-    // Unsubscribe on unmount
+    // unsubscribe on unmount
     return () => unsubscribe();
   }, [collection]);
 
